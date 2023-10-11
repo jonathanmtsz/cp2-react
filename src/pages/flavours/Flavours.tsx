@@ -28,8 +28,6 @@ export default function Flavours() {
   const { pizzaSize, pizzaFlavour, setPizzaFlavour } = useContext(OrderContext)
   const [flavourId, setflavourId] = useState("")
   const [sabores, setSabores] = useState([])
- const sasa = []
-
 
   const flavoursOptions = [
     {
@@ -87,12 +85,12 @@ export default function Flavours() {
   }
 
   const handleClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if(sasa.length >= pizzaSize[0].flavours){
-      setSabores(sasa)
-      console.log("Passou!")
-  } else {
+    if(sabores.length <= (pizzaSize[0].flavours)-1){
       setflavourId(event.target.id)
-      sasa.push(flavourId)
+      console.log(event.target.id)
+      setSabores([...sabores, event.target.id])
+  } else {
+      console.log("passou")
     }
   }
 
@@ -102,11 +100,10 @@ export default function Flavours() {
 
   const handleNext = () => {
     for(let i = 0; i < sabores.length; i++){
-    setPizzaFlavour(sabores[i])
-    console.log(sabores)
+    setPizzaFlavour(getPizzaFlavour(sabores[i]))
+    }
     console.log(pizzaFlavour)
     navigate(routes.summary)
-  }
   }
 
   useEffect(() => {
@@ -114,6 +111,10 @@ export default function Flavours() {
 
     setflavourId(pizzaFlavour[0].id)
   }, [])
+
+  useEffect(() =>{
+    console.log(sabores)
+  }, [sabores])
 
   return (
     <Layout>
@@ -137,6 +138,7 @@ export default function Flavours() {
         <Button inverse="inverse" onClick={handleBack}>
           Voltar
         </Button>
+        <Button>Sabores selecionados: {sabores.join(" - ")}</Button>
         <Button onClick={handleNext}>Escolha o sabor</Button>
       </FlavourActionWrapper>
     </Layout>
