@@ -20,7 +20,7 @@ import { Button } from "../../components/button/Button"
 export default function Summary() {
   const navigate = useNavigate()
 
-  const { pizzaSize, pizzaFlavour, setPizzaOrder } = useContext(OrderContext)
+  const { pizzaSize, pizzaFlavour, sabores, setPizzaOrder, setPizzaFlavour} = useContext(OrderContext)
   const [summaryData, setSummaryData] = useState({})
   const [summaryAmount, setSummaryAmount] = useState(0)
 
@@ -55,8 +55,8 @@ export default function Summary() {
     setSummaryData({
       text: pizzaSize[0].text,
       slices: pizzaSize[0].slices,
-      name: pizzaFlavour[0].name,
-      price: pizzaFlavour[0].price[pizzaSize[0].slices],
+      name: pizzaFlavour[0].name ,
+      price: sabores[0][0].name,
       image: pizzaFlavour[0].image,
     })
   }, [])
@@ -64,6 +64,8 @@ export default function Summary() {
   useEffect(() => {
     setSummaryAmount(summaryData.price)
   }, [summaryAmount])
+
+  
 
   return (
     <Layout>
