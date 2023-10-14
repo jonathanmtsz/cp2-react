@@ -25,10 +25,11 @@ import { Title } from "../../components/title/Title"
 
 export default function Flavours() {
   const navigate = useNavigate()
+
   const { pizzaSize, pizzaFlavour, sabores, setSabores, setPizzaFlavour } = useContext(OrderContext)
   const [flavourId, setflavourId] = useState("")
   const [saboresEscolhidos, setsaboresEscolhidos] = useState([])
-  const arraySab = []
+  const [arraySab, setarraySab] = useState([])
 
   const flavoursOptions = [
     {
@@ -90,8 +91,10 @@ export default function Flavours() {
       setflavourId(event.target.id)
       console.log(event.target.id)
       setsaboresEscolhidos([...saboresEscolhidos, event.target.id])
+      setPizzaFlavour(getPizzaFlavour(saboresEscolhidos[-1])[0])
   } else {
       console.log("passou")
+      console.log(saboresEscolhidos.join(" - "))
     }
   }
 
@@ -100,28 +103,27 @@ export default function Flavours() {
   }
 
   const handleNext = () => {
-    for(let i = 0; i < saboresEscolhidos.length; i++){
-    setPizzaFlavour(getPizzaFlavour(saboresEscolhidos[i]))
-    arraySab.push(pizzaFlavour)
-    }
+    console.log(arraySab)
     setSabores(arraySab)
-    console.log(pizzaFlavour)
+    setPizzaFlavour(arraySab[0])
     navigate(routes.summary)
   }
 
   useEffect(() => {
-    if (!pizzaFlavour) return
-
-    setflavourId(pizzaFlavour[0].id)
+ 
   }, [])
 
-  useEffect(() =>{
-    console.log(saboresEscolhidos)
-  }, [saboresEscolhidos])
+  useEffect(() => {
+    for(let i = 0; i < saboresEscolhidos.length; i++){
+      console.log(saboresEscolhidos.length)
+      setarraySab([...arraySab, getPizzaFlavour(saboresEscolhidos[i])[0]]);
+    }
 
-  useEffect(() =>{
-    console.log(arraySab)
-  }, [arraySab])
+  }, [saboresEscolhidos]);
+  
+  useEffect(() => {
+    //console.log(arraySab)
+  }, [arraySab]);
 
   return (
     <Layout>
@@ -145,7 +147,6 @@ export default function Flavours() {
         <Button inverse="inverse" onClick={handleBack}>
           Voltar
         </Button>
-        <Button>saboresEscolhidos selecionados: {saboresEscolhidos.join(" - ")}</Button>
         <Button onClick={handleNext}>Escolha o sabor</Button>
       </FlavourActionWrapper>
     </Layout>

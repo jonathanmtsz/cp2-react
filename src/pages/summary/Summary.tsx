@@ -16,6 +16,8 @@ import {
   SummaryTitle,
 } from "./Summary.style"
 import { Button } from "../../components/button/Button"
+import { Summary2Itens } from "../../components/summary2itens/Summary2Itens"
+import { Summary1Item } from "../../components/summary1item/Summary1Item"
 
 export default function Summary() {
   const navigate = useNavigate()
@@ -52,13 +54,37 @@ export default function Summary() {
       return navigate(routes.home)
     }
 
-    setSummaryData({
-      text: pizzaSize[0].text,
-      slices: pizzaSize[0].slices,
-      name: pizzaFlavour[0].name ,
-      price: sabores[0][0].name,
-      image: pizzaFlavour[0].image,
-    })
+    if(sabores.length == 1){
+      console.log(pizzaFlavour)
+      let ok = ""
+      ok = (pizzaSize[0].slices)
+      ok = ok.toString()
+      setSummaryData({
+        text: sabores[0].description,
+        slices: pizzaSize[0].slices,
+        name: sabores[0].name,
+        price: pizzaFlavour.price[ok],
+        image: sabores[0].image
+      })
+    }
+    
+    if(sabores.length == 2){
+      let ok = ""
+      ok = (pizzaSize[0].slices)
+      ok = ok.toString()
+      setSummaryData({
+        text: sabores[0].description,
+        text2:sabores[1].description,
+        slices: pizzaSize[0].slices,
+        name: sabores[0].name,
+        name2: sabores[1].name,
+        price: pizzaFlavour.price[ok],
+        image: sabores[0].image,
+        image2: sabores[1].image
+      })
+    console.log(sabores)
+    }
+    
   }, [])
 
   useEffect(() => {
@@ -69,26 +95,20 @@ export default function Summary() {
 
   return (
     <Layout>
-      <Title tabIndex={0}>Resumo do pedido</Title>
-      <SummaryContentWrapper>
-        <SummaryDetails>
-          <SummaryImage src={summaryData.image} alt="" />
-          <SummaryTitle>{summaryData.name}</SummaryTitle>
-          <SummaryDescription>
-            {summaryData.text} {`(${summaryData.slices}) pedaços`}
-          </SummaryDescription>
-          <SummaryPrice>{convertToCurrency(summaryData.price)}</SummaryPrice>
-        </SummaryDetails>
-        <SummaryAmount>
-          <SummaryPrice>{convertToCurrency(summaryAmount)}</SummaryPrice>
-        </SummaryAmount>
-      </SummaryContentWrapper>
-      <SummaryActionWrapper>
-        <Button inverse="inverse" onClick={handleBack}>
-          Voltar
-        </Button>
-        <Button onClick={handleNext}>Ir para o pagamento</Button>
-      </SummaryActionWrapper>
-    </Layout>
+    <Title tabIndex={0}>Resumo do pedido</Title>
+    <SummaryContentWrapper>
+      {sabores.length === 2 ? (
+        <Summary2Itens summaryData={summaryData} />
+      ) : (
+        <Summary1Item summaryData={summaryData}/>
+      )}
+    </SummaryContentWrapper>
+    <SummaryActionWrapper>
+      <Button inverse="inverse" onClick={handleBack}>
+        Voltar
+      </Button>
+      <Button onClick={handleNext}>Ir para o pagamento</Button>
+    </SummaryActionWrapper>
+  </Layout>
   )
 }
