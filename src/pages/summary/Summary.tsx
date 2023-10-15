@@ -22,25 +22,45 @@ import { Summary1Item } from "../../components/summary1item/Summary1Item"
 export default function Summary() {
   const navigate = useNavigate()
 
-  const { pizzaSize, pizzaFlavour, sabores, setPizzaOrder, setPizzaFlavour} = useContext(OrderContext)
+  const { pizzaSize, pizzaFlavour, pizzaOrder, sabores, setPizzaOrder, setPizzaFlavour} = useContext(OrderContext)
   const [summaryData, setSummaryData] = useState({})
   const [summaryAmount, setSummaryAmount] = useState(0)
 
   const handleBack = () => {
     navigate(routes.pizzaFlavour)
   }
-  const handleNext = () => {
-    const payload = {
-      item: {
-        name: summaryData.name,
-        image: summaryData.image,
-        size: summaryData.text,
-        slices: summaryData.slices,
-        value: summaryData.price,
-      },
-      total: summaryAmount,
-    }
 
+  const handleNext = () => {
+    let payload = {}
+    if(sabores.length == 1){
+      payload = {
+        item: {
+          name: summaryData.name,
+          image: summaryData.image,
+          size: summaryData.slices,
+          slices: summaryData.slices,
+          value: summaryData.price,
+        },
+        total: summaryAmount,
+      }
+    }
+    if(sabores.length == 2){
+       let name = sabores[0].name
+       let name2 = sabores[1].name
+        let nomeConcated = name + " / " +name2
+        console.log(nomeConcated)
+        payload = {
+          item: {
+            name: nomeConcated,
+            image: summaryData.image,
+            size: summaryData.slices,
+            slices: summaryData.slices,
+            value: summaryData.price,
+          },
+          total: summaryAmount,
+        }
+      }
+      console.log(payload)
     setPizzaOrder(payload)
     navigate(routes.checkout)
   }
@@ -67,7 +87,7 @@ export default function Summary() {
         image: sabores[0].image
       })
     }
-    
+
     if(sabores.length == 2){
       let ok = ""
       ok = (pizzaSize[0].slices)
@@ -91,7 +111,9 @@ export default function Summary() {
     setSummaryAmount(summaryData.price)
   }, [summaryAmount])
 
-  
+  useEffect(()=>{
+    console.log(pizzaOrder)
+  },[pizzaOrder])
 
   return (
     <Layout>

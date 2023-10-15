@@ -48,6 +48,7 @@ export default function Checkout() {
 
   useEffect(() => {
     if (pizzaOrder === undefined) {
+      console.log(pizzaOrder)
       return navigate(routes.pizzaSize)
     }
   }, [])
@@ -61,7 +62,7 @@ export default function Checkout() {
         <h2>Items</h2>
         <CheckoutItemFlex>
           <p>
-            {pizzaOrder?.item.name}/{pizzaOrder?.item.size}
+           Tipo: Pizza / Sabores: {pizzaOrder?.item.name} / Fatias:  {pizzaOrder?.item.size}
           </p>
           <p>{convertToCurrency(pizzaOrder?.item.value)}</p>
         </CheckoutItemFlex>
