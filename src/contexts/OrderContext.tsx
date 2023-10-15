@@ -24,16 +24,19 @@ type PizzaFlavourType = {
   }
 }
 
+type OrdersType = {
+  orders : Array<PizzaOrderType>
+}
+
 type PizzaOrderType = {
-  item: {
-    name: string
+  //item: {
+    //name: string
 /*name = flavor*/ 
-    image: string
-    size: string
-    slices: number
-    value: number
-  }
-  total: number
+    //image: string
+    //size: string
+    //slices: number
+    //value: number
+  //total: number
 }
 
 type OrderContextProps = {
@@ -45,6 +48,8 @@ type OrderContextProps = {
   setPizzaOrder: React.Dispatch<React.SetStateAction<PizzaOrderType>>
   sabores: SaboresType
   setSabores: React.Dispatch<React.SetStateAction<SaboresType>>
+  orders: OrdersType
+  setOrders: React.Dispatch<React.SetStateAction<object>>
 }
 
 const OrderContext = createContext<OrderContextProps>({})
@@ -54,6 +59,7 @@ const OrderContextProvider = ({ children }) => {
   const [pizzaFlavour, setPizzaFlavour] = useState()
   const [pizzaOrder, setPizzaOrder] = useState()
   const [sabores, setSabores] = useState()
+  const [orders, setOrders] = useState()
 
   return (
     <OrderContext.Provider
@@ -65,7 +71,9 @@ const OrderContextProvider = ({ children }) => {
         pizzaOrder,
         setPizzaOrder,
         sabores,
-        setSabores
+        setSabores,
+        orders,
+        setOrders
       }}
     >
       {children}

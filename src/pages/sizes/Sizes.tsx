@@ -9,7 +9,7 @@ import OrderContext from "../../contexts/OrderContext"
 
 export default function Sizes() {
   const navigate = useNavigate()
-  const { pizzaSize, setPizzaSize } = useContext(OrderContext)
+  const { pizzaSize, orders, setPizzaSize } = useContext(OrderContext)
 
   const sizeOptions = [
     {
@@ -75,6 +75,10 @@ export default function Sizes() {
     setPizzaSize(selectedSize)
     navigate(routes.pizzaFlavour)
   }
+
+  useEffect(() =>{
+    console.log(orders)
+  },[sizeId])
 
   useEffect(() => {
     if (!pizzaSize) return

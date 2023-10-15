@@ -26,7 +26,7 @@ import { Title } from "../../components/title/Title"
 export default function Flavours() {
   const navigate = useNavigate()
 
-  const { pizzaSize, pizzaFlavour, sabores, setSabores, setPizzaFlavour } = useContext(OrderContext)
+  const { pizzaSize, pizzaFlavour, sabores, orders , setSabores, setPizzaFlavour } = useContext(OrderContext)
   const [flavourId, setflavourId] = useState("")
   const [saboresEscolhidos, setsaboresEscolhidos] = useState([])
   const [arraySab, setarraySab] = useState([])
@@ -96,6 +96,8 @@ export default function Flavours() {
       console.log("passou")
       console.log(saboresEscolhidos.join(" - "))
     }
+
+    console.log(orders)
   }
 
   const handleBack = () => {
@@ -110,7 +112,7 @@ export default function Flavours() {
   }
 
   useEffect(() => {
- 
+
   }, [])
 
   useEffect(() => {

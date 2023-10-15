@@ -22,15 +22,12 @@ import { Summary1Item } from "../../components/summary1item/Summary1Item"
 export default function Summary() {
   const navigate = useNavigate()
 
-  const { pizzaSize, pizzaFlavour, pizzaOrder, sabores, setPizzaOrder, setPizzaFlavour} = useContext(OrderContext)
+  const { pizzaSize, pizzaFlavour, pizzaOrder, sabores, orders, setOrders ,setPizzaOrder, setPizzaFlavour} = useContext(OrderContext)
   const [summaryData, setSummaryData] = useState({})
   const [summaryAmount, setSummaryAmount] = useState(0)
+  const [OrderList, setOrderList] = useState([])
 
-  const handleBack = () => {
-    navigate(routes.pizzaFlavour)
-  }
-
-  const handleNext = () => {
+  const payloadCreator = () => {
     let payload = {}
     if(sabores.length == 1){
       payload = {
@@ -41,7 +38,7 @@ export default function Summary() {
           slices: summaryData.slices,
           value: summaryData.price,
         },
-        total: summaryAmount,
+        total: summaryData.price,
       }
     }
     if(sabores.length == 2){
@@ -57,11 +54,23 @@ export default function Summary() {
             slices: summaryData.slices,
             value: summaryData.price,
           },
-          total: summaryAmount,
+          total: summaryData.price,
         }
       }
-      console.log(payload)
-    setPizzaOrder(payload)
+      return payload
+  }
+
+  const handleBack = () => {
+    navigate(routes.pizzaFlavour)
+  }
+
+  const handleAdd = () => {
+    setOrders([...OrderList])
+    navigate(routes.pizzaSize)
+  }
+
+  const handleNext = () => {
+    setOrders([...OrderList])
     navigate(routes.checkout)
   }
 
@@ -106,14 +115,33 @@ export default function Summary() {
     }
     
   }, [])
+  
+  useEffect(() =>{
+
+    if(Object.keys(summaryData).length != 0){
+    let payloaded = payloadCreator()
+    console.log("1 - payload é:")
+    console.log(payloaded)
+    if(payloaded) {
+      setPizzaOrder(payloaded)
+    }
+  }
+  },[summaryData])
+
+  useEffect(() =>{
+    if(pizzaOrder){
+    console.log("2 -")
+    setOrderList([...OrderList, pizzaOrder])
+    console.log("pizzaOrder é: ")
+    console.log(pizzaOrder)
+    }
+  },[pizzaOrder])
 
   useEffect(() => {
-    setSummaryAmount(summaryData.price)
-  }, [summaryAmount])
-
-  useEffect(()=>{
-    console.log(pizzaOrder)
-  },[pizzaOrder])
+    console.log("OrderList é:")
+    console.log(OrderList)
+    //console.log(orders[0].item['name'])
+  }, [OrderList])
 
   return (
     <Layout>
@@ -129,6 +157,7 @@ export default function Summary() {
       <Button inverse="inverse" onClick={handleBack}>
         Voltar
       </Button>
+      <Button onClick={handleAdd}> Adicionar outra pizza </Button>
       <Button onClick={handleNext}>Ir para o pagamento</Button>
     </SummaryActionWrapper>
   </Layout>
